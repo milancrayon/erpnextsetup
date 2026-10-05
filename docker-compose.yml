@@ -69,7 +69,15 @@ services:
           bench --site "$${SITE_NAME}" install-app crm;
         fi;
         bench --site "$${SITE_NAME}" migrate;
-        echo "Building frontend assets for hrms and crm...";
+        echo "Setting up frontend assets for hrms and crm...";
+        mkdir -p sites/assets;
+        for app in crm hrms; do
+          app_public="/home/frappe/frappe-bench/apps/$app/$app/public";
+          if [ -d "$app_public" ] && [ ! -e "sites/assets/$app" ]; then
+            ln -s "$app_public" "sites/assets/$app";
+            echo "Linked sites/assets/$app";
+          fi;
+        done;
         bench build --apps hrms,crm;
     depends_on:
       configurator:
