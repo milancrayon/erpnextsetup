@@ -71,13 +71,22 @@ services:
         bench --site "$${SITE_NAME}" migrate;
         echo "Setting up frontend assets for hrms and crm...";
         mkdir -p sites/assets;
-        for app in crm hrms; do
-          app_public="/home/frappe/frappe-bench/apps/$app/$app/public";
-          if [ -d "$app_public" ] && [ ! -e "sites/assets/$app" ]; then
-            ln -s "$app_public" "sites/assets/$app";
-            echo "Linked sites/assets/$app";
-          fi;
-        done;
+        crm_public=$(dirname $(find /home/frappe/frappe-bench/apps/crm -name "logo.svg" -path "*images*" 2>/dev/null | head -1) 2>/dev/null);
+        hrms_public=$(dirname $(find /home/frappe/frappe-bench/apps/hrms -name "frappe-hr-logo.svg" 2>/dev/null | head -1) 2>/dev/null);
+        if [ -n "$crm_public" ]; then crm_public=$(dirname "$crm_public"); fi;
+        if [ -n "$hrms_public" ]; then hrms_public=$(dirname "$hrms_public"); fi;
+        echo "CRM public: $crm_public";
+        echo "HRMS public: $hrms_public";
+        if [ -n "$crm_public" ] && [ -d "$crm_public" ]; then
+          rm -rf sites/assets/crm;
+          ln -s "$crm_public" sites/assets/crm;
+          echo "Linked crm";
+        fi;
+        if [ -n "$hrms_public" ] && [ -d "$hrms_public" ]; then
+          rm -rf sites/assets/hrms;
+          ln -s "$hrms_public" sites/assets/hrms;
+          echo "Linked hrms";
+        fi;
         bench build --apps hrms,crm;
     depends_on:
       configurator:
