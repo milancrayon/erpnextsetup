@@ -70,23 +70,10 @@ services:
         fi;
         bench --site "$${SITE_NAME}" migrate;
         echo "Setting up frontend assets for hrms and crm...";
-        mkdir -p sites/assets;
-        crm_public=$(dirname $(find /home/frappe/frappe-bench/apps/crm -name "logo.svg" -path "*images*" 2>/dev/null | head -1) 2>/dev/null);
-        hrms_public=$(dirname $(find /home/frappe/frappe-bench/apps/hrms -name "frappe-hr-logo.svg" 2>/dev/null | head -1) 2>/dev/null);
-        if [ -n "$crm_public" ]; then crm_public=$(dirname "$crm_public"); fi;
-        if [ -n "$hrms_public" ]; then hrms_public=$(dirname "$hrms_public"); fi;
-        echo "CRM public: $crm_public";
-        echo "HRMS public: $hrms_public";
-        if [ -n "$crm_public" ] && [ -d "$crm_public" ]; then
-          rm -rf sites/assets/crm;
-          ln -s "$crm_public" sites/assets/crm;
-          echo "Linked crm";
-        fi;
-        if [ -n "$hrms_public" ] && [ -d "$hrms_public" ]; then
-          rm -rf sites/assets/hrms;
-          ln -s "$hrms_public" sites/assets/hrms;
-          echo "Linked hrms";
-        fi;
+        mkdir -p sites/assets/crm/images sites/assets/hrms/images;
+        curl -sL -o sites/assets/crm/images/logo.svg "https://raw.githubusercontent.com/frappe/crm/v1.86.0/crm/public/images/logo.svg" || echo "CRM logo download failed";
+        curl -sL -o sites/assets/hrms/images/frappe-hr-logo.svg "https://raw.githubusercontent.com/frappe/hrms/version-16/hrms/public/images/frappe-hr-logo.svg" || echo "HRMS logo download failed";
+        ls -la sites/assets/crm/images/ sites/assets/hrms/images/ 2>/dev/null || true;
         bench build --apps hrms,crm;
     depends_on:
       configurator:
