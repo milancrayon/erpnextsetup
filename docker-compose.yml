@@ -109,7 +109,7 @@ services:
       - "erpnext-logs:/home/frappe/frappe-bench/logs"
     labels:
       - traefik.enable=true
-      - 'traefik.http.routers.erpnext-router.rule=Host(`${SITE_NAME}`)'
+      - 'traefik.http.routers.erpnext-router.rule=Host(`erp.woodwolfdigital.com`)'
       - traefik.http.routers.erpnext-router.entrypoints=https
       - traefik.http.routers.erpnext-router.tls=true
       - traefik.http.routers.erpnext-router.tls.certresolver=letsencrypt
