@@ -8,7 +8,7 @@ RUN mkdir -p sites \
     && printf 'frappe\nerpnext\n' > sites/apps.txt
 
 RUN bench get-app https://github.com/frappe/hrms --branch version-16 --skip-assets
-RUN bench get-app https://github.com/frappe/crm --branch develop --skip-assets
+RUN bench get-app https://github.com/frappe/crm --branch v1.86.0 --skip-assets
 
 RUN ls -1 apps > sites/apps.txt \
     && bench build --apps hrms,crm
