@@ -69,10 +69,8 @@ services:
           bench --site "$${SITE_NAME}" install-app crm;
         fi;
         bench --site "$${SITE_NAME}" migrate;
-        if [ ! -e "sites/assets/crm" ] || [ ! -e "sites/assets/hrms" ]; then
-          echo "Building frontend assets for hrms and crm...";
-          bench build --apps hrms,crm;
-        fi;
+        echo "Building frontend assets for hrms and crm...";
+        bench build --apps hrms,crm;
     depends_on:
       configurator:
         condition: service_completed_successfully
