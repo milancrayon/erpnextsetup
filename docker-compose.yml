@@ -1,7 +1,7 @@
 services:
   configurator:
     image: "${FRAPPE_IMAGE:-woodwolf-erpnext:v16.37.0}"
-    build: .
+    image: frappe/erpnext:v16.37.0
     pull_policy: build
     deploy:
       restart_policy:
