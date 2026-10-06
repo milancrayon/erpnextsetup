@@ -71,9 +71,9 @@ services:
         bench --site "$${SITE_NAME}" migrate;
         echo "Setting up frontend assets for hrms and crm...";
         mkdir -p sites/assets/crm/images sites/assets/hrms/images;
-        curl -sL -o sites/assets/crm/images/logo.svg "https://raw.githubusercontent.com/frappe/crm/v1.86.0/crm/public/images/logo.svg" || echo "CRM logo download failed";
-        curl -sL -o sites/assets/hrms/images/frappe-hr-logo.svg "https://raw.githubusercontent.com/frappe/hrms/version-16/hrms/public/images/frappe-hr-logo.svg" || echo "HRMS logo download failed";
-        ls -la sites/assets/crm/images/ sites/assets/hrms/images/ 2>/dev/null || true;
+        python3 -c "import urllib.request; urllib.request.urlretrieve('https://raw.githubusercontent.com/frappe/crm/v1.86.0/crm/public/images/logo.svg', 'sites/assets/crm/images/logo.svg'); print('CRM logo downloaded')" 2>&1 || echo "CRM logo download failed";
+        python3 -c "import urllib.request; urllib.request.urlretrieve('https://raw.githubusercontent.com/frappe/hrms/version-16/hrms/public/images/frappe-hr-logo.svg', 'sites/assets/hrms/images/frappe-hr-logo.svg'); print('HRMS logo downloaded')" 2>&1 || echo "HRMS logo download failed";
+        ls -lh sites/assets/crm/images/ sites/assets/hrms/images/ 2>&1 || true;
         bench build --apps hrms,crm;
     depends_on:
       configurator:
