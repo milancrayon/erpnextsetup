@@ -41,8 +41,8 @@ services:
       - "erpnext-logs:/home/frappe/frappe-bench/logs"
     environment:
       SITE_NAME: "${SITE_NAME}"
-ADMIN_PASSWORD: <redacted>
-DB_ROOT_PASSWORD: <redacted>
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
+      DB_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
     entrypoint:
       - bash
       - "-c"
