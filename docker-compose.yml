@@ -64,8 +64,6 @@ services:
             --db-root-password="$${DB_ROOT_PASSWORD}" \
             --install-app erpnext \
             --set-default;
-          bench --site "$${SITE_NAME}" install-app hrms;
-          bench --site "$${SITE_NAME}" install-app crm;
         fi;
         bench --site "$${SITE_NAME}" migrate;
         echo "Setting up frontend assets for hrms and crm...";
