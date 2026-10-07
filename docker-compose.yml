@@ -1,6 +1,6 @@
 services:
   configurator:
-    image: frappe/erpnext:v16.37.0
+    image: "${FRAPPE_IMAGE:-woodwolf-erpnext:v16.37.0}"
     pull_policy: always
     deploy:
       restart_policy:
@@ -54,6 +54,8 @@ services:
         if [ ! -d "sites/$${SITE_NAME}" ]; then
           echo "Creating new site $${SITE_NAME}...";
           bench new-site "$${SITE_NAME}" --mariadb-user-host-login-scope='%' --admin-password="$${ADMIN_PASSWORD}" --db-root-username=root --db-root-password="$${DB_ROOT_PASSWORD}" --install-app erpnext --set-default || echo "new-site failed, continuing";
+          bench --site "$${SITE_NAME}" install-app hrms || echo "hrms install failed";
+          bench --site "$${SITE_NAME}" install-app crm || echo "crm install failed";
         fi;
         echo "Running migrate...";
         bench --site "$${SITE_NAME}" migrate || echo "migrate failed, continuing";
