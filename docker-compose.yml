@@ -1,5 +1,6 @@
 services:
   configurator:
+    build: .
     image: "${FRAPPE_IMAGE:-woodwolf-erpnext:v16.37.0}"
     pull_policy: always
     deploy:
